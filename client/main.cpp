@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 
     TcpClient client(io_context, argv[1], argv[2]);
 
-    client.connect(); // Start the connection
+    client.connect();
 
     std::thread t([&io_context]() {
         io_context.run();

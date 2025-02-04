@@ -3,9 +3,6 @@
 
 #include <asio.hpp>
 #include <iostream>
-#include <asio/ip/tcp.hpp>
-#include <asio/write.hpp>
-#include <asio/read_until.hpp>
 #include <string>
 
 class TcpClient {
@@ -16,8 +13,8 @@ public:
     void sendMessage(const std::string& message);
 
 private:
-    void doConnect() {};
-    void doWrite(const std::string& message);
+    void doConnect(){};
+    void doWrite();
     void doRead();
 
     asio::io_context& io_context_;

@@ -17,4 +17,11 @@ add_executable(babel_server
     server/Server.hpp
 )
 
+add_executable(babel_client
+    client/main.cpp
+    client/Client.cpp
+    client/Client.hpp
+)
+
 target_link_libraries(babel_server PRIVATE asio::asio)
+target_link_libraries(babel_client PRIVATE asio::asio)

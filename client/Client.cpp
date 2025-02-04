@@ -1,4 +1,8 @@
 #include "Client.hpp"
+#include <asio/ip/tcp.hpp>
+#include <asio/write.hpp>
+#include <asio/read_until.hpp>
+#include <iostream>
 
 TcpClient::TcpClient(asio::io_context& io_context, const std::string& host, const std::string& port)
     : io_context_(io_context),
@@ -22,27 +26,26 @@ void TcpClient::connect() {
 void TcpClient::sendMessage(const std::string& message) {
     asio::post(socket_.get_executor(),
         [this, message]() {
-            bool write_in_progress = !write_buffer_.empty();
             std::ostream os(&write_buffer_);
             os << message;
-            if (!write_in_progress) {
-                doWrite();
-            }
+            doWrite();
         });
 }
 
 void TcpClient::doWrite() {
-    asio::async_write(socket_, asio::buffer(write_buffer_.data(), write_buffer_.size()),
-        [this](std::error_code ec, std::size_t length) {
-            if (!ec) {
-                write_buffer_.consume(length);
-                if (!write_buffer_.empty()) {
-                    doWrite();
+    if (write_buffer_.size() > 0) {
+        asio::async_write(socket_, write_buffer_,
+            [this](std::error_code ec, std::size_t length) {
+                if (!ec) {
+                    write_buffer_.consume(length);
+                    if (write_buffer_.size() > 0) {
+                        doWrite();
+                    }
+                } else {
+                    std::cerr << "Write failed: " << ec.message() << "\n";
                 }
-            } else {
-                std::cerr << "Write failed: " << ec.message() << "\n";
-            }
-        });
+            });
+    }
 }
 
 void TcpClient::doRead() {
