@@ -32,6 +32,7 @@ Babel is a cross-platform project that requires specific dependencies and config
 
    ```bash
    conan install . --output-folder=build --build=missing
+   cd build
    cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
    make
    ```
@@ -90,7 +91,7 @@ Babel is a cross-platform project that requires specific dependencies and config
 10. Install dependencies and build:
     ```bash
     conan install . --output-folder=build --build=missing
-    cu build
+    cd build
     cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_C_COMPILER="gcc" -DCMAKE_CXX_COMPILER="g++" ..
     make
     ```
