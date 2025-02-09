@@ -4,6 +4,7 @@
 #include <portaudio.h>
 #include <vector>
 #include <functional>
+#include <cstring>
 #include "RingBuffer.hpp"
 
 class AudioStream {
